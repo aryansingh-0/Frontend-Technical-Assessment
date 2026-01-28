@@ -125,7 +125,7 @@ Zustand was chosen because:
 
 ### Help Study Abroad — Frontend Technical Assessment
 
-**Time Allotment:** 3 Hours
+**Time Allotment:** 24 Hours
 
 **Objective:**
 Build a modern, responsive dashboard using Next.js, Zustand, MUI, and REST APIs.
