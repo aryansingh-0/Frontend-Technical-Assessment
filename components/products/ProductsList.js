@@ -124,9 +124,9 @@ export default function ProductsList() {
             }}
           >
             <MenuItem value="">All</MenuItem>
-            {categories.map((cat) => (
-              <MenuItem key={cat} value={cat}>
-                {cat}
+            {categories?.map((cat) => (
+              <MenuItem key={cat} value={cat.slug}>
+                {cat.name}
               </MenuItem>
             ))}
           </Select>

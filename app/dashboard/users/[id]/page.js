@@ -17,15 +17,14 @@ import { FaArrowLeft } from "react-icons/fa";
 const BG = "#0f1111";
 const CARD = "#18181b";
 const BORDER = "#2d2f31";
-const TEXT = "#ffffff"; // main text
-const MUTED = "#a1a1aa"; // secondary text
+const TEXT = "#ffffff";
+const MUTED = "#a1a1aa";
 const ACCENT = "#e53935";
 
-// ISR: revalidate every 1 hour
 export const revalidate = 3600;
 
 export default async function Page({ params }) {
-  const { id } = await params;
+  const { id } =await params;
 
   const res = await fetch(`https://dummyjson.com/users/${id}`, {
     next: { revalidate: 3600 },
@@ -36,11 +35,10 @@ export default async function Page({ params }) {
       <Box
         bgcolor={BG}
         minHeight="100vh"
-        color={TEXT}
         display="flex"
-        justifyContent="center"
         alignItems="center"
-        fontSize={18}
+        justifyContent="center"
+        color={TEXT}
       >
         User not found
       </Box>
@@ -50,170 +48,140 @@ export default async function Page({ params }) {
   const user = await res.json();
 
   return (
-    <Box bgcolor={BG} minHeight="100vh" p={{ xs: 2, md: 4 }} color={TEXT}>
-      {/* Back Button */}
+    <Box bgcolor={BG} minHeight="100vh" p={{ xs: 2, md: 4 }}>
+      {/* Back */}
       <Link href="/dashboard/users">
         <Button
           startIcon={<FaArrowLeft />}
           sx={{
-            mb: 4,
-            backgroundColor: ACCENT,
+            mb: 3,
+            bgcolor: ACCENT,
             color: TEXT,
-            "&:hover": { backgroundColor: "#d32f2f" },
             textTransform: "none",
-            fontWeight: 600,
+            "&:hover": { bgcolor: "#d32f2f" },
           }}
         >
           Back to Users
         </Button>
       </Link>
 
-      <Grid container spacing={4}>
-        {/* Basic Info */}
+      {/* Header */}
+      <Card sx={{ bgcolor: CARD, mb: 4, p: 3 }}>
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          spacing={3}
+          alignItems="center"
+        >
+          <Avatar
+            src={user.image}
+            alt={user.username}
+            sx={{ width: 120, height: 120, bgcolor: ACCENT }}
+          />
+          <Box>
+            <Typography color={TEXT} variant="h4" fontWeight={600}>
+              {user.firstName} {user.lastName}
+            </Typography>
+            <Typography color={MUTED} mb={1}>
+              @{user.username}
+            </Typography>
+            <Typography color={TEXT}>{user.email}</Typography>
+          </Box>
+        </Stack>
+      </Card>
+
+      <Grid container spacing={3}>
+        {/* Personal Info */}
         <Grid item xs={12} md={4}>
-          <Card
-            sx={{
-              bgcolor: CARD,
-              p: 3,
-              mb: 3,
-              borderRadius: 2,
-              boxShadow: 4,
-            }}
-          >
-            <CardContent sx={{ color: TEXT }}>
-              <Stack
-                direction={{ xs: "column", md: "row" }}
-                spacing={3}
-                alignItems={{ xs: "center", md: "flex-start" }}
-              >
-                <Avatar
-                  src={user.image}
-                  alt={user.username}
-                  sx={{ width: 100, height: 100, bgcolor: ACCENT }}
-                />
-                <Box textAlign={{ xs: "center", md: "left" }}>
-                  <Typography color={TEXT}
-                    variant="h5"
-                    fontWeight={600} 
-                    mb={1}
-                  >
-                    {user.firstName} {user.lastName}
-                  </Typography>
-                  <Typography   color={MUTED} mb={1}>
-                    @{user.username}
-                  </Typography>
-                  <Typography color={TEXT}
-                    sx={{
-                      wordBreak: "break-word",
-                      overflowWrap: "anywhere",
-                      maxWidth: "100%",
-                      mb: 1,
-                    }}
-                  >
-                    {user.email}
-                  </Typography>
-                  <Typography  mb={0.5} color={TEXT}>
-                    {user.gender}, {user.age} years
-                  </Typography>
-                  <Typography  mb={0.5} color={TEXT}>
-                    Blood Group: {user.bloodGroup}
-                  </Typography>
-                  <Typography   mb={0.5} color={TEXT}>
-                    Height: {user.height} cm · Weight: {user.weight} kg
-                  </Typography>
-                  <Typography   mb={0.5} color={TEXT}>
-                    Eye Color: {user.eyeColor}
-                  </Typography>
-                  <Typography  color={TEXT}>
-                    Hair: {user.hair.color} ({user.hair.type})
-                  </Typography>
-                </Box>
-              </Stack>
-            </CardContent>
+          <Card sx={{ bgcolor: CARD, p: 3 }}>
+            <Typography color={TEXT} variant="h6" mb={1}>
+              Personal Information
+            </Typography>
+            <Divider sx={{ borderColor: BORDER, mb: 2 }} />
+
+            <Typography color={TEXT}>Gender: {user.gender}</Typography>
+            <Typography color={TEXT}>Age: {user.age}</Typography>
+            <Typography color={TEXT}>Blood Group: {user.bloodGroup}</Typography>
+            <Typography color={TEXT}>
+              Height: {user.height} cm · Weight: {user.weight} kg
+            </Typography>
+            <Typography color={TEXT}>Eye Color: {user.eyeColor}</Typography>
+            <Typography color={TEXT}>
+              Hair: {user.hair.color} ({user.hair.type})
+            </Typography>
           </Card>
         </Grid>
 
         {/* Address */}
         <Grid item xs={12} md={4}>
-          <Card
-            sx={{
-              bgcolor: CARD,
-              p: 3,
-              mb: 3,
-              borderRadius: 2,
-              boxShadow: 4,
-            }}
-          >
-            <CardContent>
-              <Typography color={TEXT} variant="h6" mb={1}         >
-                Address
-              </Typography>
-              <Divider sx={{ mb: 2, borderColor: BORDER }} />
-              <Typography color={TEXT} mb={0.5}>{user.address.address}</Typography>
-              <Typography color={TEXT} mb={0.5}>
-                {user.address.city}, {user.address.state} {user.address.postalCode}
-              </Typography>
-              <Typography color={TEXT} mb={0.5}>Country: {user.address.country}</Typography>
-              <Typography color={TEXT} mb={0.5}>IP: {user.ip}</Typography>
-              <Typography color={TEXT}>MAC: {user.macAddress}</Typography>
-            </CardContent>
-          </Card>
+          <Card sx={{ bgcolor: CARD, p: 3 }}>
+            <Typography color={TEXT} variant="h6" mb={1}>
+              Address & Network
+            </Typography>
+            <Divider sx={{ borderColor: BORDER, mb: 2 }} />
 
-          {/* Company */}
-          <Card
-            sx={{
-              bgcolor: CARD,
-              p: 3,
-              mb: 3,
-              borderRadius: 2,
-              boxShadow: 4,
-            }}
-          >
-            <CardContent>
-              <Typography color={TEXT} variant="h6" mb={1}  >
-                Company
-              </Typography>
-              <Divider sx={{ mb: 2, borderColor: BORDER }} />
-              <Typography color={TEXT} mb={0.5}>
-                <b>Name:</b> {user.company.name}
-              </Typography>
-              <Typography color={TEXT} mb={0.5}>
-                <b>Department:</b> {user.company.department}
-              </Typography>
-              <Typography color={TEXT} mb={0.5}>
-                <b>Title:</b> {user.company.title}
-              </Typography>
-              <Typography color={TEXT}>
-                <b>Address:</b> {user.company.address.address}, {user.company.address.city},{" "}
-                {user.company.address.state} {user.company.address.postalCode}
-              </Typography>
-            </CardContent>
+            <Typography color={TEXT}>{user.address.address}</Typography>
+            <Typography color={TEXT}>
+              {user.address.city}, {user.address.state}{" "}
+              {user.address.postalCode}
+            </Typography>
+            <Typography color={TEXT}>
+              Country: {user.address.country}
+            </Typography>
+            <Typography color={TEXT}>IP: {user.ip}</Typography>
+            <Typography color={TEXT}>MAC: {user.macAddress}</Typography>
           </Card>
         </Grid>
 
-        {/* University & Bank */}
+        {/* Company */}
         <Grid item xs={12} md={4}>
-          <Card
-            sx={{
-              bgcolor: CARD,
-              p: 3,
-              mb: 3,
-              borderRadius: 2,
-              boxShadow: 4,
-            }}
-          >
-            <CardContent>
-              <Typography   variant="h6" mb={1} color={TEXT}>
-                University & Bank
-              </Typography>
-              <Divider sx={{ mb: 2, borderColor: BORDER }} />
-              <Typography color={TEXT}   mb={0.5}>University: {user.university}</Typography>
-              <Typography color={TEXT}   mb={0.5}>Card Number: {user.bank.cardNumber}</Typography>
-              <Typography color={TEXT} mb={0.5}>Card Type: {user.bank.cardType}</Typography>
-              <Typography color={TEXT} mb={0.5}>Currency: {user.bank.currency}</Typography>
-              <Typography color={TEXT} mb={0.5}>IBAN: {user.bank.iban}</Typography>
-              <Typography color={TEXT}>Card Expiry: {user.bank.cardExpire}</Typography>
-            </CardContent>
+          <Card sx={{ bgcolor: CARD, p: 3 }}>
+            <Typography color={TEXT} variant="h6" mb={1}>
+              Company Details
+            </Typography>
+            <Divider sx={{ borderColor: BORDER, mb: 2 }} />
+
+            <Typography color={TEXT}>
+              Name: {user.company.name}
+            </Typography>
+            <Typography color={TEXT}>
+              Department: {user.company.department}
+            </Typography>
+            <Typography color={TEXT}>
+              Title: {user.company.title}
+            </Typography>
+            <Typography color={TEXT}>
+              Address: {user.company.address.address},{" "}
+              {user.company.address.city}
+            </Typography>
+          </Card>
+        </Grid>
+
+        {/* Education & Bank */}
+        <Grid item xs={12}>
+          <Card sx={{ bgcolor: CARD, p: 3 }}>
+            <Typography color={TEXT} variant="h6" mb={1}>
+              Education & Bank Information
+            </Typography>
+            <Divider sx={{ borderColor: BORDER, mb: 2 }} />
+
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <Typography color={TEXT}>
+                  University: {user.university}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Typography color={TEXT}>
+                  Card: {user.bank.cardType} · {user.bank.cardNumber}
+                </Typography>
+                <Typography color={TEXT}>
+                  Currency: {user.bank.currency}
+                </Typography>
+                <Typography color={TEXT}>
+                  Expiry: {user.bank.cardExpire}
+                </Typography>
+              </Grid>
+            </Grid>
           </Card>
         </Grid>
       </Grid>
